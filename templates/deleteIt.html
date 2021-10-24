@@ -1,0 +1,38 @@
+from flask import Flask, render_template,  redirect, url_for, request
+from flask_sqlalchemy import SQLAlchemy, request
+
+app = Flask(__name__)
+
+
+# app.config[url] = value
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Inavish15@localhost/inavish'
+db = SQLAlchemy(app)
+
+
+class Student(db.Model):
+    stuid = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(20), unique=False, nullable=False)
+    marks = db.Column(db.Integer(), unique=False, nullable=False)
+
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    return render_template('index.html')
+
+
+@app.route("/stuinfo", methods=['GET', 'POST'])
+def stuInfo():
+    if request.method == 'POST':
+        stuid = request.form.get('stuid')
+        name = request.form.get('name')
+        marks = request.form.get('marks')
+
+        entry = Student(stuid=stuid, name=name, marks=marks)
+        db.session.add(entry)
+        db.session.commit()
+
+    return render_template("stuinfo.html")
+
+
+if __name__ == '__main__':
+    app.run(debug = True)

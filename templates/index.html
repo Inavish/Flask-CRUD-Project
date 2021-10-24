@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <link rel="stylesheet" href="https:fontawesome/css/all.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+     </head>
+  <body>
+   <div class="container-fluid">
+      <div class="row min-vh-100 flex-column flex-md-row">
+        <aside class="col-12 col-md-3 col-x1-2 p-0 bg-dark flex-shrink-1">
+          <nav class="navbar navbar-expand-md navbar-dark bd-dark
+          flex-md-column flex-row align-items-center py-2 text-center sticky-top"
+          id="sidebar">
+          <div class="text-center p-3">
+
+            <img src="{{url_for('static', filename='1.jpeg')}}" alt="profile picture" class="img-fluid rounded-circle my-4 p-1 d-none d-md-block shadow" width="200" height="200">
+            <a href="#home" class ="navbar-brand mx-0 font-wieght-bold text-nowrap"><h4>Owner of showroom<h4></a>
+            </div>
+            <button type="button" class="navbar-toggler border-0 order-1"  data-toggle="collapse" data-target="#nav" aria-controls="nav"
+            aria-expanded="false" aria-lable="toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="cpllapse navbar-collapse prder-last" id="nav">
+              <ul class="navbar-nav flex-column w-100 justify-content-center">
+                <li class="nav-item">
+                <a href="#home"  class ="nav-link active">Home</a>
+                </li>
+                <li class="nav-item">
+                <a href="#availibility"  class ="nav-link active">Check available cars</a>
+                </li>
+                <li class="nav-item">
+                <a href="#addCars" class ="nav-link active">Add Cars</a>
+                </li>
+                <li class="nav-item">
+                <a href="#deleteCars"  class ="nav-link active">Delete Cars</a>
+                </li>
+
+              </ul>
+            </div>
+
+          </nav>
+        </aside>
+        <main class="col px-0 flex-grow-1">
+          <div id="home"  class="containerr">
+             <img src="{{url_for('static', filename='3.jpg')}}" />
+             <div class="centeredd"><h1>Welcome to your showroom</h1> <hr><h4>Shivani!</h4></div>
+
+          </div>
+      </section>
+      <section id="availibility" >
+              <div class="container">
+
+                   <div class="section-title">
+                      <hr><h2>Available cars in your showroom</h2><hr>
+                      </div>
+
+
+      <p class="lead alert alert-warning">This is a list of all the Cars</p>
+
+				<table class="table">
+			<tr>
+                <th>ID</th>
+				<th>Car Name</th>
+				<th>Car Price</th>
+				<th>Car Color</th>
+
+			</tr>
+
+
+			{% for i in car %}
+			<tr>
+                <td>{{ i.Id }}</td>
+				<td>{{ i.carName }}</td>
+				<td>{{ i.carPrice }}</td>
+				<td>{{ i.carColor }}</td>
+                 <td>
+                    <a href="/update/{{i.Id}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{i.Id}}">Edit</a>
+                 </td>
+			</tr>
+
+<div id="modaledit{{i.Id}}" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+
+
+      <div class="modal-content">
+
+
+         <div class="modal-header">
+
+
+            <h4 class="modal-title">Update Information</h4>
+
+
+         </div>
+
+
+         <div class="modal-body">
+
+
+            <form style="font-size:25px" method="POST" action="{{url_for('update')}}">
+
+
+               <div class="form-group">
+
+
+                  <label>Name:</label>
+                   <input type="hidden"  name="id" value="{{i.Id}}">
+
+                  <input type="text" class="form-control" name="carName" value="{{i.carName}}">
+
+
+               </div>
+
+
+
+               <div class="form-group">
+
+
+                  <label>Car Price:</label>
+
+                  <input type="text" class="form-control" name="carPrice" value="{{i.carPrice}}">
+
+
+               </div>
+
+
+               <div class="form-group">
+
+
+                  <label>Colour:</label>
+
+                  <input type="text" class="form-control" name="carColor" value="{{i.carColor}}">
+
+
+               </div>
+
+
+               <div class="form-group">
+
+
+                  <button class="btn btn-primary" type="submit">Update</button>
+
+
+               </div>
+
+
+            </form>
+
+
+         </div>
+
+
+         <div class="modal-footer">
+
+
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+
+         </div>
+
+
+      </div>
+
+
+   </div>
+
+</div>
+
+
+			{% endfor %}
+		</table>
+              </div>
+
+        </section>
+             <section id="addCars">
+                <div class="container">
+
+                    <div class="section-title">
+                        <hr><h2>Add cars in your showroom</h2><hr>
+                    </div>
+                  <form style="font-size:25px" method="POST" action="/insert">
+                        <div class="form-group ">
+                          <label for="carName" class="col-sm-2 col-form-label">Car Name</label>
+                          <div class="col-sm-10">
+                           <input type="text" class="form-control" name="carName" placeholder="Name" required>
+                          </div>
+                          <label for="carPrice"  class="col-sm-2 col-form-label">Price of car</label>
+                         <div class="col-sm-10">
+                         <input type="text" class="form-control" name="carPrice"  placeholder="$$$$" required>
+                         </div>
+                        <label for="carColour"  class="col-sm-2 col-form-label">Colour of car</label>
+                       <div class="col-sm-10">
+                       <input type="text" class="form-control" name="carColor"  placeholder="Colour" required>
+                           </div>
+                       </div>
+                    <button type="submit" onclick="return confirm('Are you sure to add this car in your showroom?')" class="btn btn-primary btn btn-dark mb-2">Add this car</button><br><br>
+               </form>
+
+          </div>
+      </section>
+
+
+          <section id="deleteCars" >
+              <div class="container">
+
+                   <div class="section-title">
+                      <hr><h2>Delete cars from your showroom</h2><hr>
+                          </div>
+
+                <form style="font-size:25px" method="POST" action="/delete">
+                        <div class="form-group ">
+                          <label for="carName" class="col-sm-2 col-form-label">Enter the ID </label>
+                          <div class="col-sm-10">
+                           <input type="number" class="form-control"  name="Id" placeholder="ID" required>
+                          </div>
+
+                       </div>
+                    <button type="submit" onclick="return confirm('Are You Sure To Delete ?')" class="btn btn-primary btn btn-dark mb-2">Delete this car</button><br><br>
+               </form>
+           </div>
+        </section>
+
+ <footer style="background-color:  rgb(19, 18, 18)" class="page-footer font-small mdb-color pt-4">
+
+<div class="container text-center text-md-left">
+
+
+  <div class="row text-center text-md-left mt-3 pb-3">
+
+
+    <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+      <h6 style="color:white" class="text-uppercase mb-4 font-weight-bold">Service</h6>
+      <p  style="color:white">Inavish Production<br>
+                              Inavish Hosting<br>
+                              Inavish Web Design<br>
+                              Inavish Development<br>
+                              Inavish Education<br>
+      </p>
+    </div>
+    <!-- Grid column -->
+
+    <hr class="w-100 clearfix d-md-none">
+
+
+    <hr class="w-100 clearfix d-md-none">
+
+
+    <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+      <h6 style="color:white"class="text-uppercase mb-4 font-weight-bold">Pages</h6>
+      <p>
+        <a  style="color:white" href="index.php">Home</a>
+      </p>
+      <p>
+        <a  style="color:white" href="booking.php">About</a>
+      </p>
+      <p>
+        <a  style="color:white" href="about.php">Resume</a>
+      </p>
+      <p>
+        <a  style="color:white" href="contactus.php">Portfolio</a>
+      </p>
+
+    </div>
+
+
+    <hr class="w-100 clearfix d-md-none">
+
+    <div style="color:white" class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+      <h6 style="color:white"class="text-uppercase mb-4 font-weight-bold">Contact</h6>
+      <p>
+        <i style="color:white" ></i> India,maharashtra,Mumbai</p>
+      <p>
+        <i style="color:white"></i> shivani151020@gmail.com</p>
+      <p>
+        <i style="color:white" ></i> +91-8286455269</p>
+      <p>
+        <i style="color:white" ></i>+91-8286455269</p>
+    </div>
+    <!-- Grid column -->
+
+  </div>
+
+
+  <hr>
+
+
+  <div class="row d-flex align-items-center">
+
+
+
+    <div class="col-md-5 col-lg-4 ml-lg-0">
+
+
+
+  </div>
+
+
+</div>
+
+
+</footer>
+
+
+</main>
+ </div>
+ </div>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+ </body>
+</html>
